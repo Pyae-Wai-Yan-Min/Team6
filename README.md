@@ -4,7 +4,7 @@
 
 [![LICENSE](https://img.shields.io/github/license/Pyae-Wai-Yan-Min/Team6.svg?style=flat-square)](https://github.com/Pyae-Wai-Yan-Min/Team6/blob/master/LICENSE)
 
-[![Releases](https://img.shields.io/github/release/Pyae-Wai-Yan-Min/Te/all.svg?style=flat-square)](https://github.com/Pyae-Wai-Yan-Min/Team6/releases)
+[![Releases](https://img.shields.io/github/release/Pyae-Wai-Yan-Min/Team6/all.svg?style=flat-square)](https://github.com/Pyae-Wai-Yan-Min/Team6/releases)
 
 # Master
 
