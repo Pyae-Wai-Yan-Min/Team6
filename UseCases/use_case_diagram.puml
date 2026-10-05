@@ -1,0 +1,111 @@
+@startuml
+left to right direction
+skinparam packageStyle rectangle
+skinparam roundcorner 8
+skinparam actorStyle awesome
+
+actor "Data Analyst" as Analyst
+
+rectangle "Population Reporting System" {
+
+' ==========================================================
+' 1. COUNTRY REPORTS
+' ==========================================================
+usecase "Country Reports" as UC_Country
+usecase "All Countries in the World" as C1
+usecase "All Countries in a Continent" as C2
+usecase "All Countries in a Region" as C3
+
+UC_Country <.. C1 : "<extend>"
+UC_Country <.. C2 : "<extend>"
+UC_Country <.. C3 : "<extend>"
+
+' ==========================================================
+' 2. COUNTRY-POPULATION
+' ==========================================================
+usecase "Country-Population" as UC_CountryPop
+usecase "Top N Countries in the World" as CP1
+usecase "Top N Countries in a Continent" as CP2
+usecase "Top N Countries in a Region" as CP3
+
+UC_CountryPop <.. CP1 : "<extend>"
+UC_CountryPop <.. CP2 : "<extend>"
+UC_CountryPop <.. CP3 : "<extend>"
+
+' ==========================================================
+' 3. CITY
+' ==========================================================
+usecase "City" as UC_City
+usecase "All Cities in the World" as City1
+usecase "All Cities in a Continent" as City2
+usecase "All Cities in a Region" as City3
+usecase "All Cities in a Country" as City4
+usecase "All Cities in a District" as City5
+
+UC_City <.. City1 : "<extend>"
+UC_City <.. City2 : "<extend>"
+UC_City <.. City3 : "<extend>"
+UC_City <.. City4 : "<extend>"
+UC_City <.. City5 : "<extend>"
+
+' ==========================================================
+' 4. CITY-POPULATION
+' ==========================================================
+usecase "City-Population" as UC_CityPop
+usecase "Top N Cities in the World" as CityPop1
+usecase "Top N Cities in a Continent" as CityPop2
+usecase "Top N Cities in a Region" as CityPop3
+usecase "Top N Cities in a Country" as CityPop4
+usecase "Top N Cities in a District" as CityPop5
+
+UC_CityPop <.. CityPop1 : "<extend>"
+UC_CityPop <.. CityPop2 : "<extend>"
+UC_CityPop <.. CityPop3 : "<extend>"
+UC_CityPop <.. CityPop4 : "<extend>"
+UC_CityPop <.. CityPop5 : "<extend>"
+
+' ==========================================================
+' 5. CAPITAL CITY
+' ==========================================================
+usecase "Capital City" as UC_CapCity
+usecase "All Capital Cities in the World" as Cap1
+usecase "All Capital Cities in a Continent" as Cap2
+usecase "All Capital Cities in a Region" as Cap3
+usecase "Top N Capital Cities in the World" as Cap4
+usecase "Top N Capital Cities in a Continent" as Cap5
+usecase "Top N Capital Cities in a Region" as Cap6
+
+UC_CapCity <.. Cap1 : "<extend>"
+UC_CapCity <.. Cap2 : "<extend>"
+UC_CapCity <.. Cap3 : "<extend>"
+UC_CapCity <.. Cap4 : "<extend>"
+UC_CapCity <.. Cap5 : "<extend>"
+UC_CapCity <.. Cap6 : "<extend>"
+
+' ==========================================================
+' 6. POPULATION
+' ==========================================================
+usecase "Population" as UC_Pop
+usecase "Living in Cities / Not Living in Cities\nin Each Continent" as Pop1
+usecase "Living in Cities / Not Living in Cities\nin Each Region" as Pop2
+usecase "Living in Cities / Not Living in Cities\nin Each Country" as Pop3
+usecase "Population of World, Continent, Region,\nCountry, District, City" as Pop4
+usecase "Speakers of Chinese, English,\nHindi, Spanish, Arabic" as Pop5
+
+UC_Pop <.. Pop1 : "<extend>"
+UC_Pop <.. Pop2 : "<extend>"
+UC_Pop <.. Pop3 : "<extend>"
+UC_Pop <.. Pop4 : "<extend>"
+UC_Pop <.. Pop5 : "<extend>"
+
+}
+
+' Analyst connects directly to the 6 main category ovals on the left
+Analyst --> UC_Country
+Analyst --> UC_CountryPop
+Analyst --> UC_City
+Analyst --> UC_CityPop
+Analyst --> UC_CapCity
+Analyst --> UC_Pop
+
+@enduml
