@@ -1,85 +1,66 @@
-USE CASE: Generate City-Population Reports
+# USE CASE: Generate City-Population Reports
 
-CHARACTERISTIC INFORMATION
+## CHARACTERISTIC INFORMATION
 
-Goals in Context
+### Goals in Context
 
 _As a population data analyst, I want to know:
+- the top N populated cities in the world where N is provided by the user to analyze global demographics.
+- the top N populated cities in a continent where N is provided by the user to analyze continental demographics.
+- the top N populated cities in a region where N is provided by the user to analyze regional demographics.
+- the top N populated cities in a country where N is provided by the user to analyze national demographics.
+- the top N populated cities in a district where N is provided by the user to analyze local demographics._
 
-the top N populated cities in the world where N is provided by the user, to analyze global demographics.
+### Scope
 
-the top N populated cities in a continent where N is provided by the user, to analyze continental demographics.
+Global, Continental, Regional, National, Local City-Population reporting system.
 
-the top N populated cities in a region where N is provided by the user, to analyze regional demographics.
+### Level
 
-the top N populated cities in a country where N is provided by the user, to analyze national demographics.
+**Primary Task**
 
-the top N populated cities in a district where N is provided by the user, to analyze local demographics._
+### Preconditions
 
-Scope
+The database contains accurate and up-to-date data on city populations along with their corresponding district, country, region, and continent. The user has authorized access to generate these reports.
 
-World, Continental, Regional, National, and District City-Population reporting system.
+### Success End Condition
 
-Level
+The system successfully generates and displays reports on the top N populated cities of the world, continent, region, country, or district in accordance with the selected scope.
 
-Primary Task
+### Failed End Condition
 
-Preconditions
+No Report is produced or incomplete data is displayed.
 
-The database contains accurate and up-to-date population data for all cities along with their corresponding district, country, region, and continent classifications. The Data Analyst has access to the system and provides a valid integer $N$.
+### Primary Actor
 
-Success End Condition
+_Data Analyst_
 
-The system successfully generates and displays a report listing the top $N$ populated cities sorted in descending order of population, matching the specified geographic boundary.
+### Trigger
 
-Failed End Condition
+A request is initiated by the Data Analyst to generate top N city-population reports for a specific geographic scope.
 
-No report is produced or an error message is displayed due to invalid input parameters or database connection failure.
+### Main Success Scenario
 
-Primary Actor
+1. The Data Analyst initiates a request for a city-population report.
+2. The Data Analyst specifies the desired scope (world, continent, region, country, or district) and provides the value for N.
+3. The system queries the database for the relevant city population data based on the provided scope and N value.
+4. The system retrieves the requested data from the database.
+5. The system sorts and organizes the retrieved data in descending order according to population.
+6. The system generates and displays the requested report with appropriate columns and headings.
 
-Data Analyst
+### Extension
 
-Trigger
+2. **If scope, N value, or population data is missing or invalid:** System requests correction or notifies the user that no data is available.
+   3.a. If the Data Analyst's selected scope is world, the system queries the relevant data columns: Name of City, Country, District, Population.
+   3.b. If the Data Analyst's selected scope is continent, the system queries the relevant data columns: Name of City, Continent, Country, District, Population.
+   3.c. If the Data Analyst's selected scope is region, the system queries the relevant data columns: Name of City, Region, Country, District, Population.
+   3.d. If the Data Analyst's selected scope is country, the system queries the relevant data columns: Name of City, Country, District, Population.
+   3.e. If the Data Analyst's selected scope is district, the system queries the relevant data columns: Name of City, District, Population.
 
-A request is initiated by the Data Analyst to generate a Top N city-population report for global or localized demographic analysis.
-
-Main Success Scenario
-
-The Data Analyst initiates a request for a Top N city-population report.
-
-The Data Analyst specifies the desired geographic scope (world, continent, region, country, or district) and provides the positive integer value $N$.
-
-The system queries the database for the relevant city population records within the selected scope, limiting the output to the top $N$ records.
-
-The system retrieves the requested dataset from the database.
-
-The system sorts and organizes the retrieved data in descending order according to population.
-
-The system generates and displays the requested report with the appropriate columns and headings.
-
-Extension
-
-2.a. If geographic scope is missing or invalid: System requests correction or notifies the Data Analyst that no matching geographic records were found.
-
-2.b. If parameter $N$ is missing, non-numeric, zero, or negative ($N \le 0$): System notifies the Data Analyst and requests a valid positive whole number.
-
-3.a. If the Data Analyst's selected scope is world, the system queries the top $N$ populated cities globally with columns: City Name, Country, District, and Population.
-
-3.b. If the Data Analyst's selected scope is continent, the system queries the top $N$ populated cities in the specified continent with columns: City Name, Country, District, and Population.
-
-3.c. If the Data Analyst's selected scope is region, the system queries the top $N$ populated cities in the specified region with columns: City Name, Country, District, and Population.
-
-3.d. If the Data Analyst's selected scope is country, the system queries the top $N$ populated cities in the specified country with columns: City Name, Country, District, and Population.
-
-3.e. If the Data Analyst's selected scope is district, the system queries the top $N$ populated cities in the specified district with columns: City Name, Country, District, and Population.
-
-4.a. Database connection failure: The system logs the failure and informs the Data Analyst that the database service is currently unavailable.
-
-SUB-VARIATIONS
+### SUB-VARIATIONS
 
 None
 
-SCHEDULE
+### SCHEDULE
 
-DUE DATE: Release 1.0
+**DUE DATE:** Release 1.0
