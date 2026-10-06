@@ -20,7 +20,7 @@ Global, Continental and Regional Country Population Reporting System.
 
 ### Preconditions
 
-The database is available and contains country information, including country code, name, continent, region, population and capital. The Data Analyst has access to the system to request country population reports.
+The database is available and contains country information, including country code, name, continent, region, population, and capital. The Data Analyst has access to the system to request country population reports.
 
 ### Success End Condition
 
