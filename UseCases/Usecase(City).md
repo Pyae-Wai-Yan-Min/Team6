@@ -4,12 +4,12 @@
 
 ### Goals in Context
 
-_As a city planner, I want to know:
+As a population data analyst, I want to know:
 - all the cities in the world organised by largest population to smallest to analyze global demographics.
 - all the cities in a continent organised by largest population to smallest to analyze continental demographics.
 - all the cities in a region organised by largest population to smallest to analyze regional demographics.
 - all the cities in a country organised by largest population to smallest to analyze national demographics.
-- all the cities in a district organised by largest population to smallest to analyze local demographics._
+- all the cities in a district organised by largest population to smallest to analyze local demographics.
 
 ### Scope
 
@@ -73,4 +73,4 @@ None
 
 ### SCHEDULE
 
-**DUE DATE:** Release 1.0
+**DUE DATE:** Release 1.0**
