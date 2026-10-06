@@ -4,7 +4,7 @@
 
 ### Goals in Context
 
-_As an organization member, I want to produce reports on country populations so that I can analyze global, continental, and regional demographics._
+_As a population data analyst, I want to know:
 
 - All the countries in the world organized by largest population to smallest.
 - All the countries in a continent organized by largest population to smallest.
