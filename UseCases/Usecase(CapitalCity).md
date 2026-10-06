@@ -1,241 +1,65 @@
-# Capital City Use Cases
+# USE CASE: Generate Capital City Reports
 
----
+## CHARACTERISTIC INFORMATION
 
-## Use Case: All Capital Cities in the World
+### Goals in Context
 
-**Goal in Context:**
-As a population data analyst, I want to view a report of all the capital cities in the world organized by largest population to smallest, so that I can analyze global capital city populations.
+_As a population data analyst, I want to know:
+- all the capital cities in the world organised by largest population to smallest to analyze global capital city distribution.
+- all the capital cities in a continent organised by largest population to smallest to compare capital city sizes across the continent.
+- all the capital cities in a region organised by largest population to smallest to understand capital city distribution in the region.
+- the top N populated capital cities in the world where N is provided by the user to analyze global capital city demographics.
+- the top N populated capital cities in a continent where N is provided by the user to analyze continental capital city demographics.
+- the top N populated capital cities in a region where N is provided by the user to analyze regional capital city demographics._
 
-**Scope:** Population Reporting System
+### Scope
 
-**Level:** Primary task
+Global, Continental, and Regional Capital City reporting system.
 
-**Preconditions:**
-- User is authenticated.
-- Population database is available.
+### Level
 
-**Success Condition:**
-A report is produced listing all capital cities in the world sorted by population (largest to smallest).
+**Primary Task**
 
-**Failed Condition:**
-No report produced; an error message is shown.
+### Preconditions
 
-**Primary Actor:** Population Data Analyst
+The database contains accurate and up-to-date data on capital city populations along with their corresponding country, region, and continent. The user has authorized access to generate these reports.
 
-**Trigger:** User selects "All Capital Cities in the World" report.
+### Success End Condition
 
-**Main Success Scenario:**
-1. User selects "All Capital Cities in the World" report.
-2. System queries the database for all capital cities.
-3. System retrieves name, country, and population for each capital city.
-4. System sorts by population (largest to smallest).
-5. System displays the report.
+The system successfully generates and displays reports on all capital cities or the top N populated capital cities of the world, continent, or region in accordance with the selected scope.
 
-**Extensions:**
-- 2a. Database connection fails → System shows "Database error".
+### Failed End Condition
 
-**Report Format:** Name, Country, Population.
+No Report is produced or incomplete data is displayed.
 
----
+### Primary Actor
 
-## Use Case: All Capital Cities in a Continent
+_Data Analyst_
 
-**Goal in Context:**
-As a population data analyst, I want to view a report of all the capital cities in a specific continent organized by largest population to smallest, so that I can compare capital city sizes across the continent.
+### Trigger
 
-**Scope:** Population Reporting System
+A request is initiated by the Data Analyst to generate capital city reports for a specific geographic scope.
 
-**Level:** Primary task
+### Main Success Scenario
 
-**Preconditions:**
-- User is authenticated.
-- Population database is available.
-- A valid continent name is provided.
+1. The Data Analyst initiates a request for a capital city report.
+2. The Data Analyst specifies the desired scope (world, continent, or region) and, if required, provides the value for N.
+3. The system queries the database for the relevant capital city population data based on the provided scope and N value.
+4. The system retrieves the requested data from the database.
+5. The system sorts and organizes the retrieved data in descending order according to population.
+6. The system generates and displays the requested report with appropriate columns and headings.
 
-**Success Condition:**
-A report is produced listing all capital cities in the continent sorted by population.
+### Extension
 
-**Failed Condition:**
-No report produced; an error message is shown.
+2. **If scope, N value, or population data is missing or invalid:** System requests correction or notifies the user that no data is available.
+   3.a. If the Data Analyst's selected scope is world, the system queries the relevant data columns: Name of Capital City, Country, Population.
+   3.b. If the Data Analyst's selected scope is continent, the system queries the relevant data columns: Name of Capital City, Continent, Country, Population.
+   3.c. If the Data Analyst's selected scope is region, the system queries the relevant data columns: Name of Capital City, Region, Country, Population.
 
-**Primary Actor:** Population Data Analyst
+### SUB-VARIATIONS
 
-**Trigger:** User selects "Capital Cities by Continent" and enters a continent name.
+None
 
-**Main Success Scenario:**
-1. User selects "Capital Cities by Continent".
-2. User enters continent name.
-3. System queries the database for capital cities in that continent.
-4. System retrieves name, country, and population.
-5. System sorts by population (largest to smallest).
-6. System displays the report.
+### SCHEDULE
 
-**Extensions:**
-- 2a. Continent name invalid → System shows "No data found".
-- 3a. Database fails → System shows "Database error".
-
-**Report Format:** Name, Country, Population.
-
----
-
-## Use Case: All Capital Cities in a Region
-
-**Goal in Context:**
-As a population data analyst, I want to view a report of all the capital cities in a specific region organized by largest population to smallest, so that I can understand capital city distribution in that region.
-
-**Scope:** Population Reporting System
-
-**Level:** Primary task
-
-**Preconditions:**
-- User is authenticated.
-- Population database is available.
-- A valid region name is provided.
-
-**Success Condition:**
-A report is produced listing all capital cities in the region sorted by population.
-
-**Failed Condition:**
-No report produced; an error message is shown.
-
-**Primary Actor:** Population Data Analyst
-
-**Trigger:** User selects "Capital Cities by Region" and enters a region name.
-
-**Main Success Scenario:**
-1. User selects "Capital Cities by Region".
-2. User enters region name.
-3. System queries the database for capital cities in that region.
-4. System retrieves name, country, and population.
-5. System sorts by population (largest to smallest).
-6. System displays the report.
-
-**Extensions:**
-- 2a. Region name invalid → System shows "No data found".
-- 3a. Database fails → System shows "Database error".
-
-**Report Format:** Name, Country, Population.
-
----
-
-## Use Case: Top N Capital Cities in the World
-
-**Goal in Context:**
-As a population data analyst, I want to input N to see the top N populated capital cities in the world, so that I can analyze global capital city demographics.
-
-**Scope:** Population Reporting System
-
-**Level:** Primary task
-
-**Preconditions:**
-- User is authenticated.
-- Population database is available.
-- A positive integer N is provided.
-
-**Success Condition:**
-A report is produced showing the top N capital cities in the world by population.
-
-**Failed Condition:**
-No report produced; an error message is shown.
-
-**Primary Actor:** Population Data Analyst
-
-**Trigger:** User selects "Top N Capital Cities in the World" and enters N.
-
-**Main Success Scenario:**
-1. User selects "Top N Capital Cities in the World".
-2. User enters N.
-3. System validates N.
-4. System queries the database for all capital cities in the world.
-5. System sorts by population (largest to smallest).
-6. System returns the top N.
-7. System displays the report.
-
-**Extensions:**
-- 2a. N is not a positive integer → System shows "Invalid input".
-- 3a. Database fails → System shows "Database error".
-
-**Report Format:** Name, Country, Population.
-
----
-
-## Use Case: Top N Capital Cities in a Continent
-
-**Goal in Context:**
-As a population data analyst, I want to input N to see the top N populated capital cities in a specific continent, so that I can analyze continental capital city demographics.
-
-**Scope:** Population Reporting System
-
-**Level:** Primary task
-
-**Preconditions:**
-- User is authenticated.
-- Population database is available.
-- A valid continent name and positive integer N are provided.
-
-**Success Condition:**
-A report is produced showing the top N capital cities in the continent by population.
-
-**Failed Condition:**
-No report produced; an error message is shown.
-
-**Primary Actor:** Population Data Analyst
-
-**Trigger:** User selects "Top N Capital Cities in a Continent" and enters continent and N.
-
-**Main Success Scenario:**
-1. User selects "Top N Capital Cities in a Continent".
-2. User enters continent name and N.
-3. System validates input.
-4. System queries the database for capital cities in the continent.
-5. System sorts by population (largest to smallest).
-6. System returns the top N.
-7. System displays the report.
-
-**Extensions:**
-- 2a. Input invalid → System shows "Invalid input".
-- 3a. Continent not found → System shows "No data found".
-
-**Report Format:** Name, Country, Population.
-
----
-
-## Use Case: Top N Capital Cities in a Region
-
-**Goal in Context:**
-As a population data analyst, I want to input N to see the top N populated capital cities in a region, so that I can analyze regional capital city demographics.
-
-**Scope:** Population Reporting System
-
-**Level:** Primary task
-
-**Preconditions:**
-- User is authenticated.
-- Population database is available.
-- A valid region name and positive integer N are provided.
-
-**Success Condition:**
-A report is produced showing the top N capital cities in the region by population.
-
-**Failed Condition:**
-No report produced; an error message is shown.
-
-**Primary Actor:** Population Data Analyst
-
-**Trigger:** User selects "Top N Capital Cities in a Region" and enters region and N.
-
-**Main Success Scenario:**
-1. User selects "Top N Capital Cities in a Region".
-2. User enters region name and N.
-3. System validates input.
-4. System queries the database for capital cities in the region.
-5. System sorts by population (largest to smallest).
-6. System returns the top N.
-7. System displays the report.
-
-**Extensions:**
-- 2a. Input invalid → System shows "Invalid input".
-- 3a. Region not found → System shows "No data found".
-
-**Report Format:** Name, Country, Population.
+**DUE DATE:** Release 1.0
