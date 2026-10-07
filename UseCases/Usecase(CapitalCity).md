@@ -56,6 +56,12 @@ A request is initiated by the Data Analyst to generate capital city reports for 
    3.b. If the Data Analyst's selected scope is continent, the system queries the relevant data columns: Name of Capital City, Continent, Country, Population.
    3.c. If the Data Analyst's selected scope is region, the system queries the relevant data columns: Name of Capital City, Region, Country, Population.
 
+
+
+
+
+
+
 ### SUB-VARIATIONS
 
 None
