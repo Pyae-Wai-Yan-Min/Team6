@@ -1,0 +1,19 @@
+services:
+  db:
+    image: mysql_db
+    container_name: mysql_db
+    build: db/.
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpsw
+      MYSQL_DATABASE: world_db
+      MYSQL_ROOT_HOST: '%'
+    ports:
+      - "33060:3306"
+
+  app:
+    image: mysql_app
+    container_name: mysql_app
+    build: .
+    depends_on:
+      - db
