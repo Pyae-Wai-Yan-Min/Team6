@@ -4,10 +4,6 @@ import java.sql.*;
 
 public class Connection {
 
-    /**
-     * Establishes a connection to the MySQL database.
-     * Retries up to 10 times with a delay to allow the database container time to spin up.
-     */
     public static java.sql.Connection connect() {
         try {
             // Load MySQL JDBC driver
@@ -20,24 +16,40 @@ public class Connection {
         java.sql.Connection con = null;
         int retries = 10;
 
+        // Note: Your Dockerfile correctly sets the root password to 'rootpsw' which matches below
         for (int i = 0; i < retries; ++i) {
-            System.out.println("Connecting to database...");
+            System.out.println("Connecting to database... (Attempt " + i + ")");
             try {
-                // Wait for DB container initialization
-                Thread.sleep(30000);
-
-                // Connect to the 'world' database using user 'root' and password '12345'
+                // TRY 1: Local testing (IntelliJ)
+                // This connects via the exposed port 33060 defined in docker-compose.yaml
                 con = DriverManager.getConnection(
-                        "jdbc:mysql://db:3306/world?allowPublicKeyRetrieval=true&useSSL=false",
+                        "jdbc:mysql://localhost:33060/world?allowPublicKeyRetrieval=true&useSSL=false",
                         "root",
                         "rootpsw"
                 );
-
-                System.out.println("Successfully connected");
+                System.out.println("Successfully connected to Local Database!");
                 break; // Exit retry loop on successful connection
+
             } catch (SQLException sqle) {
-                System.out.println("Failed to connect to database attempt " + i);
-                System.out.println(sqle.getMessage());
+                try {
+                    // TRY 2: Docker deployment
+                    // If localhost fails, it means the app is running inside Docker, so try 'db'
+                    con = DriverManager.getConnection(
+                            "jdbc:mysql://db:3306/world?allowPublicKeyRetrieval=true&useSSL=false",
+                            "root",
+                            "rootpsw"
+                    );
+                    System.out.println("Successfully connected to Docker Database!");
+                    break; // Exit retry loop on successful connection
+
+                } catch (SQLException sqle2) {
+                    System.out.println("Failed to connect. Retrying...");
+                }
+            }
+
+            // Wait 3 seconds before retrying (Moved here so it doesn't delay the very first attempt)
+            try {
+                Thread.sleep(3000);
             } catch (InterruptedException ie) {
                 System.out.println("Thread interrupted? Should not happen.");
             }
