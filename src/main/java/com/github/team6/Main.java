@@ -19,7 +19,7 @@ public class Main {
 //            CapitalCityReport.generateReport(con);
 
             System.out.println("--- Generating City Reports ---");
-//            CityReport.generateReport(con);
+            CityReport.generateReport(con);
 
             System.out.println("--- Generating City Population Reports ---");
 //            CityPopulationReport.generateReport(con);
