@@ -22,7 +22,7 @@ public class Main {
             CityReport.generateReport(con);
 
             System.out.println("--- Generating City Population Reports ---");
-//            CityPopulationReport.generateReport(con);
+            CityPopulationReport.generateReport(con);
 
             System.out.println("--- Generating Country Population Reports ---");
 //            CountryPopulationReport.generateReport(con);
