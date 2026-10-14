@@ -4,8 +4,18 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
+/**
+ * Handles the generation of City-Population demographic reports.
+ * This class fulfills the primary task of allowing a Data Analyst to extract
+ * the top N populated cities sorted by largest population to smallest.
+ */
 public class CityPopulationReport {
 
+    /**
+     * Triggers the generation of predefined top N city population reports.
+     *
+     * @param con The active database connection.
+     */
     // This is the main method that Main.java will call
     public static void generateReport(Connection con) {
         System.out.println("\n--- Generating City Population Reports ---");
@@ -16,6 +26,12 @@ public class CityPopulationReport {
         getTopCitiesInRegion(con, "Southeast Asia", 5);
     }
 
+    /**
+     * Analyzes global demographics by retrieving the top N populated cities in the world.
+     *
+     * @param con The active database connection.
+     * @param n   The number of top records to retrieve.
+     */
     // 1. The top N populated cities in the world
     public static void getTopCitiesInWorld(Connection con, int n) {
         System.out.println("\nTop " + n + " Populated Cities in the World:");
@@ -33,6 +49,13 @@ public class CityPopulationReport {
         }
     }
 
+    /**
+     * Analyzes continental demographics by retrieving the top N populated cities in a continent.
+     *
+     * @param con       The active database connection.
+     * @param continent The target continent to filter by.
+     * @param n         The number of top records to retrieve.
+     */
     // 2. The top N populated cities in a continent
     public static void getTopCitiesInContinent(Connection con, String continent, int n) {
         System.out.println("\nTop " + n + " Populated Cities in " + continent + ":");
@@ -54,6 +77,13 @@ public class CityPopulationReport {
         }
     }
 
+    /**
+     * Analyzes regional demographics by retrieving the top N populated cities in a region.
+     *
+     * @param con    The active database connection.
+     * @param region The target region to filter by.
+     * @param n      The number of top records to retrieve.
+     */
     // 3. The top N populated cities in a region
     public static void getTopCitiesInRegion(Connection con, String region, int n) {
         System.out.println("\nTop " + n + " Populated Cities in " + region + ":");
