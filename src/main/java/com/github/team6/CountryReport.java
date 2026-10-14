@@ -9,39 +9,39 @@ public class CountryReport {
     // Entry point called by Main.java
     public static void generateReport(java.sql.Connection con) {
 
-        // Report 1: All countries worldwide by population
+        // Issue #24: All countries in the world by population
         generateWorldReport(con);
 
-        // Report 2: All countries grouped by continent
+        // Issue #25: All countries in a continent by population
         generateContinentReport(con);
 
-        // Report 3: All countries grouped by region
+        // Issue #26: All countries in a region by population
         generateRegionReport(con);
     }
 
-    // Report 1: Worldwide country report
+    // Issue #24: All countries in the world by population
     private static void generateWorldReport(java.sql.Connection con) {
         runReport(
                 con,
-                "REPORT 1: ALL COUNTRIES WORLDWIDE BY POPULATION",
+                "*** All Countries in the World by Population ***",
                 null
         );
     }
 
-    // Report 2: Countries grouped by continent
+    // Issue #25: All countries in a continent by population
     private static void generateContinentReport(java.sql.Connection con) {
         runReport(
                 con,
-                "REPORT 2: COUNTRIES GROUPED BY CONTINENT",
+                "*** All Countries Grouped By Continent ***",
                 "Continent"
         );
     }
 
-    // Report 3: Countries grouped by region
+    // Issue #26: All countries in a region by population
     private static void generateRegionReport(java.sql.Connection con) {
         runReport(
                 con,
-                "REPORT 3: COUNTRIES GROUPED BY REGION",
+                "*** All Countries Grouped By Region ***",
                 "Region"
         );
     }
@@ -66,6 +66,7 @@ public class CountryReport {
             sql += "ORDER BY c.Region ASC, c.Population DESC, c.Name ASC";
         }
 
+        // Distinct visual separation for the title
         System.out.println("\n========================================");
         System.out.println(reportTitle);
         System.out.println("========================================");
@@ -110,7 +111,7 @@ public class CountryReport {
         }
     }
 
-    // Print the required six columns
+    // Print header
     private static void printColumnHeaders() {
         System.out.printf(
                 "%-8s %-25s %-20s %-25s %12s %-25s%n",
