@@ -2,33 +2,33 @@ package com.github.team6;
 
 public class Main {
 
-    public static void main(String[] args){
+    public static void main(String[] args) {
         // 1. Establish the database connection
         java.sql.Connection con = Connection.connect();
 
-        if (con == null){
+        if (con == null) {
             System.out.println("Failed to connect to the database. Exiting.");
             return;
         }
 
-        try{
+        try {
             System.out.println("Running application...");
 
             // 2. Call each team member's specific report file
-           System.out.println("--- Generating Capital City Reports ---");
+            System.out.println("--- Generating Capital City Reports ---");
             CapitalCityReport.generateReport(con);
 
-//            System.out.println("--- Generating City Reports ---");
-//            CityReport.generateReport(con);
+            System.out.println("--- Generating City Reports ---");
+            CityReport.generateReport(con);
 
-//            System.out.println("--- Generating City Population Reports ---");
-//            CityPopulationReport.generateReport(con);
+            System.out.println("--- Generating City Population Reports ---");
+            CityPopulationReport.generateReport(con);
 
-//            System.out.println("--- Generating Country Population Reports ---");
-//            CountryPopulationReport.generateReport(con);
+            System.out.println("--- Generating Country Population Reports ---");
+            CountryPopulationReport.generateReport(con);
 
-//            System.out.println("--- Generating Country Reports ---");
-//            CountryReport.generateReport(con);
+            System.out.println("--- Generating Country Reports ---");
+            CountryReport.generateReport(con);
 
             System.out.println("--- Generating General Population Reports ---");
             PopulationReport.generateReport(con);
