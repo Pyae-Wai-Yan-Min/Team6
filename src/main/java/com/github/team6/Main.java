@@ -15,8 +15,8 @@ public class Main {
             System.out.println("Running application...");
 
             // 2. Call each team member's specific report file
-//            System.out.println("--- Generating Capital City Reports ---");
-//            CapitalCityReport.generateReport(con);
+           System.out.println("--- Generating Capital City Reports ---");
+            CapitalCityReport.generateReport(con);
 
 //            System.out.println("--- Generating City Reports ---");
 //            CityReport.generateReport(con);
