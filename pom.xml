@@ -6,7 +6,7 @@
 
     <groupId>com.github.team6</groupId>
     <artifactId>Team6</artifactId>
-    <version>0.2.0</version>
+    <version>0.2.1</version>
 
     <properties>
         <maven.compiler.source>25</maven.compiler.source>
