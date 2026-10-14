@@ -13,7 +13,7 @@ public class PopulationReport {
         printCountryReport(con);
     }
 
-    // Prints the Population Report for all Continents.
+    // Issue #20 : Gets the Population Report for each Continent.
     public static void printContinentReport(Connection con) {
         String sql = "SELECT " +
                 "    c.Continent AS Continent_Name, " +
@@ -41,7 +41,7 @@ public class PopulationReport {
         executeAndPrintReport(con, "POPULATION REPORT BY CONTINENT", "Continent", sql);
     }
 
-    // Prints the Population Report for all Region.
+    // Issue #21 : Gets the Population Report for each Continent
     public static void printRegionReport(Connection con) {
         String sql = "SELECT " +
                 "    r.Region AS Region_Name, " +
@@ -70,7 +70,7 @@ public class PopulationReport {
         executeAndPrintReport(con, "POPULATION REPORT BY REGION", "Region", sql);
     }
 
-    // Prints the Population Report for all Country
+    // Issue #22 : Gets the Population Report for each Country
     public static void printCountryReport(Connection con) {
         String sql = "SELECT " +
                 "    co.Country_Name, " +
@@ -100,10 +100,11 @@ public class PopulationReport {
         System.out.printf(" %-108s %n", title);
         System.out.println("=".repeat(110));
 
+        //Tabular format
         String headerFormat = "| %-30s | %15s | %15s | %10s | %15s | %10s |%n";
         String rowFormat    = "| %-30s | %,15d | %,15d | %10s | %,15d | %10s |%n";
 
-        System.out.format(headerFormat, nameHeader, "Total Pop", "City Pop", "City %", "Non-City Pop", "Non-City %");
+        System.out.format(headerFormat, nameHeader, "Total Population", "City Population", "City Population (%)", "Non-City Population", "Non-CityPopulation(%)");
         System.out.println("-".repeat(110));
 
         try (PreparedStatement stmt = con.prepareStatement(query);
