@@ -20,10 +20,14 @@ public class CityPopulationReport {
     public static void generateReport(Connection con) {
         System.out.println("\n--- Generating City Population Reports ---");
 
-        // You can change the 'N' number and the Continent/Region names here to test
+        // You can change the 'N' number and the targets here to test
         getTopCitiesInWorld(con, 5);
         getTopCitiesInContinent(con, "Asia", 5);
         getTopCitiesInRegion(con, "Southeast Asia", 5);
+
+        // New methods for Issue #4 and Issue #5
+        getTopCitiesInCountry(con, "United States", 5);
+        getTopCitiesInDistrict(con, "California", 5);
     }
 
     /**
@@ -102,6 +106,72 @@ public class CityPopulationReport {
             }
         } catch (Exception e) {
             System.out.println("Error fetching region cities: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Analyzes national demographics by retrieving the top N populated cities in a country.
+     * Addresses Issue #4.
+     *
+     * @param con     The active database connection.
+     * @param country The target country name to filter by.
+     * @param n       The number of top records to retrieve.
+     */
+    // 4. The top N populated cities in a country
+    public static void getTopCitiesInCountry(Connection con, String country, int n) {
+        System.out.println("\nTop " + n + " Populated Cities in Country: " + country);
+        System.out.println(String.format("%-35s %-35s %-35s %-20s", "Name", "Country", "District", "Population"));
+        try {
+            String query = "SELECT city.Name, country.Name AS CountryName, city.District, city.Population " +
+                    "FROM city JOIN country ON city.CountryCode = country.Code " +
+                    "WHERE country.Name = ? ORDER BY city.Population DESC LIMIT ?";
+            PreparedStatement pstmt = con.prepareStatement(query);
+            pstmt.setString(1, country);
+            pstmt.setInt(2, n);
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                System.out.println(String.format("%-35s %-35s %-35s %-20d",
+                        rs.getString("Name"),
+                        rs.getString("CountryName"),
+                        rs.getString("District"),
+                        rs.getInt("Population")));
+            }
+        } catch (Exception e) {
+            System.out.println("Error fetching country cities: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Analyzes local demographics by retrieving the top N populated cities in a district.
+     * Addresses Issue #5.
+     *
+     * @param con      The active database connection.
+     * @param district The target district name to filter by.
+     * @param n        The number of top records to retrieve.
+     */
+    // 5. The top N populated cities in a district
+    public static void getTopCitiesInDistrict(Connection con, String district, int n) {
+        System.out.println("\nTop " + n + " Populated Cities in District: " + district);
+        System.out.println(String.format("%-35s %-35s %-35s %-20s", "Name", "Country", "District", "Population"));
+        try {
+            String query = "SELECT city.Name, country.Name AS CountryName, city.District, city.Population " +
+                    "FROM city JOIN country ON city.CountryCode = country.Code " +
+                    "WHERE city.District = ? ORDER BY city.Population DESC LIMIT ?";
+            PreparedStatement pstmt = con.prepareStatement(query);
+            pstmt.setString(1, district);
+            pstmt.setInt(2, n);
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                System.out.println(String.format("%-35s %-35s %-35s %-20d",
+                        rs.getString("Name"),
+                        rs.getString("CountryName"),
+                        rs.getString("District"),
+                        rs.getInt("Population")));
+            }
+        } catch (Exception e) {
+            System.out.println("Error fetching district cities: " + e.getMessage());
         }
     }
 }
