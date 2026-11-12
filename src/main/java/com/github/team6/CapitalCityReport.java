@@ -35,6 +35,18 @@ public class CapitalCityReport {
         // Issue #13: All capital cities in a region by population
         ArrayList<CapitalCity> westernEuropeCapitals = getAllCapitalCitiesInRegion(con, "Western Europe");
         printCapitalCities("*** All Capital Cities in Western Europe by Population ***", westernEuropeCapitals);
+
+        // Issue #14: Top 10 capital cities in the world
+        ArrayList<CapitalCity> topNWorld = getTopNCapitalCitiesInWorld(con, 10);
+        printCapitalCities("*** Top 10 Capital Cities in the World by Population ***", topNWorld);
+
+        // Issue #15: Top 10 capital cities in a continent
+        ArrayList<CapitalCity> topNEurope = getTopNCapitalCitiesInContinent(con, "Europe", 10);
+        printCapitalCities("*** Top 10 Capital Cities in Europe by Population ***", topNEurope);
+
+        // Issue #16: Top 10 capital cities in a region
+        ArrayList<CapitalCity> topNWesternEurope = getTopNCapitalCitiesInRegion(con, "Western Europe", 10);
+        printCapitalCities("*** Top 10 Capital Cities in Western Europe by Population ***", topNWesternEurope);
     }
 
     /**
@@ -129,6 +141,103 @@ public class CapitalCityReport {
         } catch (Exception e) {
             System.out.println(e.getMessage());
             System.out.println("Failed to get capital city details for region: " + region);
+            return null;
+        }
+    }
+
+    /**
+     * Issue #14: Gets Top N capital cities in the world ordered by population descending.
+     */
+    public static ArrayList<CapitalCity> getTopNCapitalCitiesInWorld(Connection con, int n) {
+        try {
+            String strSelect =
+                    "SELECT city.Name AS City, country.Name AS Country, city.Population AS Population " +
+                            "FROM city " +
+                            "JOIN country ON city.ID = country.Capital " +
+                            "ORDER BY city.Population DESC LIMIT ?";
+
+            PreparedStatement pstmt = con.prepareStatement(strSelect);
+            pstmt.setInt(1, n);
+            ResultSet rset = pstmt.executeQuery();
+
+            ArrayList<CapitalCity> capitals = new ArrayList<>();
+            while (rset.next()) {
+                CapitalCity cap = new CapitalCity();
+                cap.name = rset.getString("City");
+                cap.country = rset.getString("Country");
+                cap.population = rset.getInt("Population");
+                capitals.add(cap);
+            }
+            return capitals;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            System.out.println("Failed to get top N capital city details for the world");
+            return null;
+        }
+    }
+
+    /**
+     * Issue #15: Gets Top N capital cities in a given continent ordered by population descending.
+     */
+    public static ArrayList<CapitalCity> getTopNCapitalCitiesInContinent(Connection con, String continent, int n) {
+        try {
+            String strSelect =
+                    "SELECT city.Name AS City, country.Name AS Country, city.Population AS Population " +
+                            "FROM city " +
+                            "JOIN country ON city.ID = country.Capital " +
+                            "WHERE country.Continent = ? " +
+                            "ORDER BY city.Population DESC LIMIT ?";
+
+            PreparedStatement pstmt = con.prepareStatement(strSelect);
+            pstmt.setString(1, continent);
+            pstmt.setInt(2, n);
+            ResultSet rset = pstmt.executeQuery();
+
+            ArrayList<CapitalCity> capitals = new ArrayList<>();
+            while (rset.next()) {
+                CapitalCity cap = new CapitalCity();
+                cap.name = rset.getString("City");
+                cap.country = rset.getString("Country");
+                cap.population = rset.getInt("Population");
+                capitals.add(cap);
+            }
+            return capitals;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            System.out.println("Failed to get top N capital city details for continent: " + continent);
+            return null;
+        }
+    }
+
+    /**
+     * Issue #16: Gets Top N capital cities in a given region ordered by population descending.
+     */
+    public static ArrayList<CapitalCity> getTopNCapitalCitiesInRegion(Connection con, String region, int n) {
+        try {
+            String strSelect =
+                    "SELECT city.Name AS City, country.Name AS Country, city.Population AS Population " +
+                            "FROM city " +
+                            "JOIN country ON city.ID = country.Capital " +
+                            "WHERE country.Region = ? " +
+                            "ORDER BY city.Population DESC LIMIT ?";
+
+            PreparedStatement pstmt = con.prepareStatement(strSelect);
+            pstmt.setString(1, region);
+            pstmt.setInt(2, n);
+            ResultSet rset = pstmt.executeQuery();
+
+            ArrayList<CapitalCity> capitals = new ArrayList<>();
+            while (rset.next()) {
+                CapitalCity cap = new CapitalCity();
+                cap.name = rset.getString("City");
+                cap.country = rset.getString("Country");
+                cap.population = rset.getInt("Population");
+                capitals.add(cap);
+            }
+            return capitals;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            System.out.println("Failed to get top N capital city details for region: " + region);
             return null;
         }
     }
