@@ -7,6 +7,11 @@ import java.sql.SQLException;
 
 public class PopulationReport {
 
+    /**
+     * Master method invoked directly from Main.java to execute all population reports.
+     *
+     * @param con The active database connection.
+     */
     public static void generateReport(Connection con) {
 
         printContinentReport(con);
@@ -21,8 +26,10 @@ public class PopulationReport {
         printCityReport(con);
     }
 
-    /*
+    /**
      * Issue #20 : Gets the Population Report for each Continent.
+     *
+     * @param con The active database connection.
      */
     public static void printContinentReport(Connection con) {
         String sql = "SELECT " +
@@ -51,8 +58,10 @@ public class PopulationReport {
         executeAndPrintReport(con, "POPULATION REPORT BY CONTINENT", "Continent", sql);
     }
 
-    /*
+    /**
      *Issue #21 : Gets the Population Report for each Region
+     *
+     * @param con The active database connection.
      */
     public static void printRegionReport(Connection con) {
         String sql = "SELECT " +
@@ -82,8 +91,10 @@ public class PopulationReport {
         executeAndPrintReport(con, "POPULATION REPORT BY REGION", "Region", sql);
     }
 
-    /*
+    /**
      * Issue #22 : Gets the Population Report for each Country
+     *
+     * @param con The active database connection.
      */
     public static void printCountryReport(Connection con) {
         String sql = "SELECT " +
@@ -108,8 +119,10 @@ public class PopulationReport {
         executeAndPrintReport(con, "POPULATION REPORT BY COUNTRY", "Country", sql);
     }
 
-    /*
+    /**
      * Issue #27 : Get population of people who speak Chinese, English, Hindi, Spanish, Arabic
+     *
+     * @param con The active database connection.
      */
     public static void printLanguageReport(Connection con) {
         String sql = "SELECT " +
@@ -154,8 +167,10 @@ public class PopulationReport {
         System.out.println("=".repeat(75) + "\n");
     }
 
-    /*
+    /**
      * Issue #23 : Get population of world, continent, region, country, district, city
+     *
+     * @param con The active database connection.
      */
     public static void printWorldReport(Connection con) {
         String sql = "SELECT " +
@@ -253,8 +268,13 @@ public class PopulationReport {
         executeAndPrintUniversal(con, "POPULATION REPORT BY CITY", "City (Country)", sql);
     }
 
-    /*
+    /**
      * Helper method for handling Continent, Region, Country reports
+     *
+     * @param con        The active database connection.
+     * @param title      The report title banner.
+     * @param nameHeader The column header name for the grouped entity.
+     * @param query      The SQL query string to execute.
      */
     private static void executeAndPrintReport(Connection con, String title, String nameHeader, String query) {
         System.out.println("\n" + "=".repeat(110));
@@ -296,8 +316,13 @@ public class PopulationReport {
     }
 
 
-    /*
+    /**
      * Helper method for handling broader hierarchical data reports (World, Continent, Region, Country, District, City)
+     *
+     * @param con        The active database connection.
+     * @param title      The report title banner.
+     * @param nameHeader The column header name for the grouped entity.
+     * @param query      The SQL query string to execute.
      */
     private static void executeAndPrintUniversal(Connection con, String title, String nameHeader, String query) {
         System.out.println("\n" + "=".repeat(110));
@@ -338,6 +363,13 @@ public class PopulationReport {
         System.out.println("=".repeat(110) + "\n");
     }
 
+    /**
+     * Helper method to truncate long text strings to fit within table cell limits.
+     *
+     * @param text      The text string to truncate.
+     * @param maxLength The maximum allowed character length.
+     * @return The truncated string with ellipsis if it exceeds the limit.
+     */
     private static String truncate(String text, int maxLength) {
         if (text == null) return "";
         return text.length() > maxLength ? text.substring(0, maxLength - 3) + "..." : text;
