@@ -36,6 +36,14 @@ public class CityReport {
         // Issue #7: All cities in a country by population
         ArrayList<City> japanCities = getAllCitiesInCountry(con, "Japan");
         printCities("*** All Cities in Japan by Population ***", japanCities);
+
+        // Issue #8: All cities in a region by population
+        ArrayList<City> regionCities = getAllCitiesInRegion(con, "Caribbean");
+        printCities("*** All Cities in the Caribbean Region by Population ***", regionCities);
+
+        // Issue #6: All cities in a district by population
+        ArrayList<City> districtCities = getAllCitiesInDistrict(con, "Maharashtra");
+        printCities("*** All Cities in the Maharashtra District by Population ***", districtCities);
     }
 
     /**
@@ -136,6 +144,75 @@ public class CityReport {
             return null;
         }
     }
+
+    /**
+     * Issue #8: Gets all cities in a given region ordered by population descending.
+     */
+    public static ArrayList<City> getAllCitiesInRegion(Connection con, String regionName) {
+        try {
+            String strSelect =
+                    "SELECT city.Name, country.Name AS Country, city.District, city.Population " +
+                            "FROM city " +
+                            "JOIN country ON city.CountryCode = country.Code " +
+                            "WHERE country.Region = ? " +
+                            "ORDER BY city.Population DESC";
+
+            PreparedStatement pstmt = con.prepareStatement(strSelect);
+            pstmt.setString(1, regionName);
+            ResultSet rset = pstmt.executeQuery();
+
+            ArrayList<City> cities = new ArrayList<>();
+
+            while (rset.next()) {
+                City city = new City();
+                city.name = rset.getString("Name");
+                city.country = rset.getString("Country");
+                city.district = rset.getString("District");
+                city.population = rset.getInt("Population");
+                cities.add(city);
+            }
+            return cities;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            System.out.println("Failed to get city details for region: " + regionName);
+            return null;
+        }
+    }
+
+    /**
+     * Issue #6: Gets all cities in a given district ordered by population descending.
+     */
+    public static ArrayList<City> getAllCitiesInDistrict(Connection con, String districtName) {
+        try {
+            String strSelect =
+                    "SELECT city.Name, country.Name AS Country, city.District, city.Population " +
+                            "FROM city " +
+                            "JOIN country ON city.CountryCode = country.Code " +
+                            "WHERE city.District = ? " +
+                            "ORDER BY city.Population DESC";
+
+            PreparedStatement pstmt = con.prepareStatement(strSelect);
+            pstmt.setString(1, districtName);
+            ResultSet rset = pstmt.executeQuery();
+
+            ArrayList<City> cities = new ArrayList<>();
+
+            while (rset.next()) {
+                City city = new City();
+                city.name = rset.getString("Name");
+                city.country = rset.getString("Country");
+                city.district = rset.getString("District");
+                city.population = rset.getInt("Population");
+                cities.add(city);
+            }
+            return cities;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            System.out.println("Failed to get city details for district: " + districtName);
+            return null;
+        }
+    }
+
 
     /**
      * Prints a list of cities with a dynamic title and cleanly formatted columns.
