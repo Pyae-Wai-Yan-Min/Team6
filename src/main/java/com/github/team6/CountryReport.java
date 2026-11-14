@@ -1,62 +1,33 @@
 package com.github.team6;
 
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 public class CountryReport {
 
     // Entry point called by Main.java
-    public static void generateReport(java.sql.Connection con) {
-
+    public static void generateReport(Connection con) {
         // Issue #24: All countries in the world by population
-        generateWorldReport(con);
+        ArrayList<World.Country> worldCountries = getCountries(con, null);
+        printCountries("*** All Countries in the World by Population ***", null, worldCountries);
 
         // Issue #25: All countries in a continent by population
-        generateContinentReport(con);
+        ArrayList<World.Country> continentCountries = getCountries(con, "Continent");
+        printCountries("*** All Countries Grouped By Continent ***", "Continent", continentCountries);
 
         // Issue #26: All countries in a region by population
-        generateRegionReport(con);
-    }
-
-    // Issue #24: All countries in the world by population
-    private static void generateWorldReport(java.sql.Connection con) {
-        runReport(
-                con,
-                "*** All Countries in the World by Population ***",
-                null
-        );
-    }
-
-    // Issue #25: All countries in a continent by population
-    private static void generateContinentReport(java.sql.Connection con) {
-        runReport(
-                con,
-                "*** All Countries Grouped By Continent ***",
-                "Continent"
-        );
-    }
-
-    // Issue #26: All countries in a region by population
-    private static void generateRegionReport(java.sql.Connection con) {
-        runReport(
-                con,
-                "*** All Countries Grouped By Region ***",
-                "Region"
-        );
+        ArrayList<World.Country> regionCountries = getCountries(con, "Region");
+        printCountries("*** All Countries Grouped By Region ***", "Region", regionCountries);
     }
 
     // Shared method for retrieving and displaying country data
-    private static void runReport(
-            java.sql.Connection con,
-            String reportTitle,
-            String groupColumn) {
-
-        String sql =
-                "SELECT c.Code, c.Name, c.Continent, c.Region, " +
-                        "c.Population, capital.Name AS Capital " +
-                        "FROM country c " +
-                        "LEFT JOIN city capital ON c.Capital = capital.ID ";
+    public static ArrayList<World.Country> getCountries(Connection con, String groupColumn) {
+        String sql = "SELECT c.Code, c.Name, c.Continent, c.Region, " +
+                "c.Population, capital.Name AS Capital " +
+                "FROM country c LEFT JOIN city capital ON c.Capital = capital.ID ";
 
         if (groupColumn == null) {
             sql += "ORDER BY c.Population DESC, c.Name ASC";
@@ -66,66 +37,65 @@ public class CountryReport {
             sql += "ORDER BY c.Region ASC, c.Population DESC, c.Name ASC";
         }
 
-        // Distinct visual separation for the title
+        ArrayList<World.Country> countries = new ArrayList<>();
+        try (Statement stmt = con.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+            while (rs.next()) {
+                World.Country country = new World.Country();
+                country.setCode(rs.getString("Code"));
+                country.setName(rs.getString("Name"));
+                country.setContinent(rs.getString("Continent"));
+                country.setRegion(rs.getString("Region"));
+                country.setPopulation(rs.getInt("Population"));
+                country.setCapital(rs.getString("Capital"));
+                countries.add(country);
+            }
+        } catch (SQLException e) {
+            System.out.println("Error fetching country report data: " + e.getMessage());
+        }
+        return countries;
+    }
+
+    // Prints a list of countries with grouping support
+    public static void printCountries(String reportTitle, String groupColumn, ArrayList<World.Country> countries) {
+        if (countries == null || countries.isEmpty()) {
+            System.out.println("No countries found for this report.");
+            return;
+        }
+
         System.out.println("\n========================================");
         System.out.println(reportTitle);
         System.out.println("========================================");
 
         String previousGroup = null;
+        printColumnHeaders();
 
-        try (Statement stmt = con.createStatement();
-             ResultSet rs = stmt.executeQuery(sql)) {
-
-            printColumnHeaders();
-
-            while (rs.next()) {
-
-                // Print a heading when a new group begins
-                if (groupColumn != null) {
-                    String currentGroup = rs.getString(groupColumn);
-
-                    if (previousGroup == null ||
-                            !java.util.Objects.equals(currentGroup, previousGroup)) {
-
-                        System.out.println("\n--- " + currentGroup + " ---");
-                        printColumnHeaders();
-                        previousGroup = currentGroup;
-                    }
+        for (World.Country c : countries) {
+            if (groupColumn != null) {
+                String currentGroup = groupColumn.equals("Continent") ? c.getContinent() : c.getRegion();
+                if (previousGroup == null || !java.util.Objects.equals(currentGroup, previousGroup)) {
+                    System.out.println("\n--- " + currentGroup + " ---");
+                    printColumnHeaders();
+                    previousGroup = currentGroup;
                 }
-
-                System.out.printf(
-                        "%-8s %-25s %-20s %-25s %12d %-25s%n",
-                        rs.getString("Code"),
-                        rs.getString("Name"),
-                        rs.getString("Continent"),
-                        rs.getString("Region"),
-                        rs.getInt("Population"),
-                        rs.getString("Capital") == null
-                                ? "Unknown"
-                                : rs.getString("Capital")
-                );
             }
 
-        } catch (SQLException e) {
-            System.out.println("Error generating report: " + e.getMessage());
+            System.out.printf("%-8s %-25s %-20s %-25s %12d %-25s%n",
+                    c.getCode(),
+                    c.getName(),
+                    c.getContinent(),
+                    c.getRegion(),
+                    c.getPopulation(),
+                    c.getCapital() == null ? "Unknown" : c.getCapital()
+            );
         }
     }
 
     // Print header
     private static void printColumnHeaders() {
-        System.out.printf(
-                "%-8s %-25s %-20s %-25s %12s %-25s%n",
-                "Code",
-                "Name",
-                "Continent",
-                "Region",
-                "Population",
-                "Capital"
-        );
-
-        System.out.println(
-                "---------------------------------------------------------------------------------------------------------------"
-        );
+        System.out.printf("%-8s %-25s %-20s %-25s %12s %-25s%n",
+                "Code", "Name", "Continent", "Region", "Population", "Capital");
+        System.out.println("---------------------------------------------------------------------------------------------------------------");
     }
 }
-
