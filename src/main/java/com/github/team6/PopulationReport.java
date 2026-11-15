@@ -144,12 +144,16 @@ public class PopulationReport {
      * @param con The active database connection.
      */
     public static ArrayList<World.LanguageStats> getLanguageReport(Connection con) {
+        ArrayList<World.LanguageStats> statsList = new ArrayList<>();
+        if (con == null) {
+            return statsList;
+        }
+
         String sql = "SELECT cl.Language, SUM(CAST(ROUND(c.Population * (cl.Percentage / 100)) AS UNSIGNED)) AS Total_Speakers, " +
                 "ROUND((SUM(CAST(ROUND(c.Population * (cl.Percentage / 100)) AS UNSIGNED)) / (SELECT SUM(Population) FROM country)) * 100, 2) AS World_Percentage " +
                 "FROM countrylanguage cl JOIN country c ON cl.CountryCode = c.Code " +
                 "WHERE cl.Language IN ('Chinese', 'English', 'Hindi', 'Spanish', 'Arabic') GROUP BY cl.Language ORDER BY Total_Speakers DESC";
 
-        ArrayList<World.LanguageStats> statsList = new ArrayList<>();
         try (PreparedStatement stmt = con.prepareStatement(sql);
              ResultSet rs = stmt.executeQuery()) {
             while (rs.next()) {
@@ -167,6 +171,10 @@ public class PopulationReport {
 
     private static ArrayList<World.PopulationStats> fetchPopulationStats(Connection con, String query) {
         ArrayList<World.PopulationStats> statsList = new ArrayList<>();
+        if (con == null) {
+            return statsList;
+        }
+
         try (PreparedStatement stmt = con.prepareStatement(query);
              ResultSet rs = stmt.executeQuery()) {
             while (rs.next()) {
@@ -201,6 +209,7 @@ public class PopulationReport {
 
         if (statsList != null) {
             for (World.PopulationStats stats : statsList) {
+                if (stats == null) continue;
                 System.out.format("| %-30s | %,15d | %,15d | %9.2f%% | %,15d | %9.2f%% |%n",
                         truncate(stats.getAreaName(), 30), stats.getTotalPopulation(), stats.getCityPopulation(),
                         stats.getCityPercentage(), stats.getNonCityPopulation(), stats.getNonCityPercentage());
@@ -225,6 +234,7 @@ public class PopulationReport {
 
         if (statsList != null) {
             for (World.PopulationStats stats : statsList) {
+                if (stats == null) continue;
                 System.out.format("| %-35s | %,15d | %,15d | %9.2f%% | %,15d | %9.2f%% |%n",
                         truncate(stats.getAreaName(), 35), stats.getTotalPopulation(), stats.getCityPopulation(),
                         stats.getCityPercentage(), stats.getNonCityPopulation(), stats.getNonCityPercentage());
@@ -242,6 +252,7 @@ public class PopulationReport {
 
         if (statsList != null) {
             for (World.LanguageStats stats : statsList) {
+                if (stats == null) continue;
                 System.out.format("| %-20s | %,25d | %17.2f%% |%n",
                         truncate(stats.getLanguage(), 20), stats.getTotalSpeakers(), stats.getWorldPercentage());
             }
