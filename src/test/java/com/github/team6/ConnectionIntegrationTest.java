@@ -18,12 +18,15 @@ public class ConnectionIntegrationTest {
             } catch (Exception e) {
                 fail("Exception occurred while checking connection state: " + e.getMessage());
             } finally {
-                // Test the disconnect functionality
+                // Test the disconnect functionality with an active connection
                 com.github.team6.Connection.disconnect(con);
             }
         } else {
             // Fallback warning if the database container is offline during local test execution
             System.out.println("Warning: Database container not running. Skipping active connection assertions.");
         }
+
+        // Cover the 'con != null' false branch inside disconnect() (compatible with JUnit Jupiter 5.1.0)
+        com.github.team6.Connection.disconnect(null);
     }
 }
