@@ -79,6 +79,27 @@ public class CityPopulationReportIntegrationTest {
         CityPopulationReport.printCities("--- Integration Test: Top 2 California ---", cities);
     }
 
+    @Test
+    void testGenerateReportAndEdgeCases() {
+        // 1. Covers the main generateReport(con) method with a live DB connection
+        CityPopulationReport.generateReport(con);
+
+        // 2. Covers the null/empty branches inside printCities()
+        CityPopulationReport.printCities("Empty List Test", new ArrayList<>());
+        CityPopulationReport.printCities("Null List Test", null);
+
+        ArrayList<World.City> listWithNull = new ArrayList<>();
+        listWithNull.add(null);
+        CityPopulationReport.printCities("Null Element Test", listWithNull);
+
+        // 3. Covers all 5 'catch (Exception e)' blocks by passing a null connection
+        CityPopulationReport.getTopCitiesInWorld(null, 5);
+        CityPopulationReport.getTopCitiesInContinent(null, "Asia", 5);
+        CityPopulationReport.getTopCitiesInRegion(null, "Southeast Asia", 5);
+        CityPopulationReport.getTopCitiesInCountry(null, "United States", 5);
+        CityPopulationReport.getTopCitiesInDistrict(null, "California", 5);
+    }
+
     @AfterAll
     static void disconnect() {
         // Use your team's official disconnect method to clean up
