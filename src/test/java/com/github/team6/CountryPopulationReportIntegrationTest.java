@@ -120,6 +120,30 @@ public class CountryPopulationReportIntegrationTest {
         CountryPopulationReport.generateReport(con);
     }
 
+    /**
+     * Covers printCountries() edge cases and all 3 'catch (SQLException e)' blocks
+     */
+    @Test
+    void testPrintEdgeCasesAndSqlExceptions() throws Exception {
+        // 1. Cover null, empty, null-element, and null-field branches inside printCountries()
+        CountryPopulationReport.printCountries("Empty List Test", new ArrayList<>());
+        CountryPopulationReport.printCountries("Null List Test", null);
+
+        ArrayList<World.Country> edgeCaseList = new ArrayList<>();
+        edgeCaseList.add(null);
+        edgeCaseList.add(new World.Country()); // All fields null (triggers all 5 '? : "-"' ternary fallbacks)
+        CountryPopulationReport.printCountries("Edge Cases Test", edgeCaseList);
+
+        // 2. Open and immediately close a temporary connection so JDBC throws a genuine SQLException
+        java.sql.Connection closedCon = Connection.connect();
+        assertNotNull(closedCon);
+        closedCon.close();
+
+        assertNull(CountryPopulationReport.getTopCountriesInWorld(closedCon, 5));
+        assertNull(CountryPopulationReport.getTopCountriesInContinent(closedCon, "Asia", 5));
+        assertNull(CountryPopulationReport.getTopCountriesInRegion(closedCon, "Southeast Asia", 4));
+    }
+
     @AfterAll
     static void disconnect() {
         // Use the team's official disconnect method to clean up

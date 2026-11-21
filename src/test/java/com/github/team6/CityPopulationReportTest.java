@@ -62,4 +62,18 @@ public class CityPopulationReportTest {
         // Test to ensure it doesn't crash when printing empty string fields
         CityPopulationReport.printCities("Test Empty Fields Output:", cities);
     }
+
+    @Test
+    void testDatabaseExceptionsWithNullConnection() {
+        // Passing 'null' as the connection forces a NullPointerException inside the try block,
+        // which triggers and covers all 5 'catch (Exception e)' blocks!
+        CityPopulationReport.getTopCitiesInWorld(null, 5);
+        CityPopulationReport.getTopCitiesInContinent(null, "Asia", 5);
+        CityPopulationReport.getTopCitiesInRegion(null, "Southeast Asia", 5);
+        CityPopulationReport.getTopCitiesInCountry(null, "United States", 5);
+        CityPopulationReport.getTopCitiesInDistrict(null, "California", 5);
+
+        // Also covers the main generateReport() method!
+        CityPopulationReport.generateReport(null);
+    }
 }
