@@ -88,6 +88,31 @@ public class CapitalCityReportIntegrationTest {
         CapitalCityReport.printCapitalCities("--- Integration Test: Top 2 Eastern Europe Capitals ---", capitals);
     }
 
+    @Test
+    void testGenerateReportAndEdgeCases() {
+        // 1. Covers the main generateReport(con) method with a live DB connection
+        CapitalCityReport.generateReport(con);
+
+        // 2. Covers the null, empty, and null-element branches inside printCapitalCities()
+        CapitalCityReport.printCapitalCities("Empty List Test", new ArrayList<>());
+        CapitalCityReport.printCapitalCities("Null List Test", null);
+
+        ArrayList<World.CapitalCity> listWithNull = new ArrayList<>();
+        listWithNull.add(null);
+        World.CapitalCity emptyFields = new World.CapitalCity();
+        listWithNull.add(emptyFields);
+        CapitalCityReport.printCapitalCities("Null Element & Fields Test", listWithNull);
+
+        // 3. Covers all 6 'catch (Exception e)' blocks by passing a null connection
+        assertNull(CapitalCityReport.getAllCapitalCitiesInWorld(null));
+        assertNull(CapitalCityReport.getAllCapitalCitiesInContinent(null, "Europe"));
+        assertNull(CapitalCityReport.getAllCapitalCitiesInRegion(null, "Western Europe"));
+        assertNull(CapitalCityReport.getTopNCapitalCitiesInWorld(null, 5));
+        assertNull(CapitalCityReport.getTopNCapitalCitiesInContinent(null, "Asia", 3));
+        assertNull(CapitalCityReport.getTopNCapitalCitiesInRegion(null, "Eastern Europe", 2));
+    }
+
+
     @AfterAll
     static void disconnect() {
         // Close the database connection

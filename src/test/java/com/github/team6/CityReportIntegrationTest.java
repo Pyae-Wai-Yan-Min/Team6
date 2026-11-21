@@ -75,6 +75,38 @@ public class CityReportIntegrationTest {
         CityReport.printCities("--- Integration Test: All Cities in Maharashtra ---", cities);
     }
 
+    @Test
+    void testGenerateReportAndEdgeCases() {
+        // 1. Covers the main generateReport(con) method with a live DB connection
+        CityReport.generateReport(con);
+
+        // 2. Covers the null, empty, null-element, and empty-field branches inside printCities()
+        CityReport.printCities("Empty List Test", new ArrayList<>());
+        CityReport.printCities("Null List Test", null);
+
+        ArrayList<World.City> listWithEdgeCases = new ArrayList<>();
+        listWithEdgeCases.add(null);
+
+        World.City nullFieldsCity = new World.City();
+        listWithEdgeCases.add(nullFieldsCity);
+
+        World.City emptyDistrictCity = new World.City();
+        emptyDistrictCity.setName("Test City");
+        emptyDistrictCity.setCountry("Test Country");
+        emptyDistrictCity.setDistrict("");
+        emptyDistrictCity.setPopulation(1000);
+        listWithEdgeCases.add(emptyDistrictCity);
+
+        CityReport.printCities("Edge Case Fields Test", listWithEdgeCases);
+
+        // 3. Covers all 5 'catch (Exception e)' blocks by passing a null connection
+        assertNull(CityReport.getAllCitiesInWorld(null));
+        assertNull(CityReport.getAllCitiesInContinent(null, "Europe"));
+        assertNull(CityReport.getAllCitiesInCountry(null, "Japan"));
+        assertNull(CityReport.getAllCitiesInRegion(null, "Caribbean"));
+        assertNull(CityReport.getAllCitiesInDistrict(null, "Maharashtra"));
+    }
+
     @AfterAll
     static void disconnect() {
         // Cleanly disconnects using your team's utility method

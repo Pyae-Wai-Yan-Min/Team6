@@ -82,6 +82,36 @@ public class CountryReportIntegrationTest {
         );
     }
 
+    @Test
+    void testGenerateReportAndEdgeCases() throws Exception {
+        // 1. Covers the main generateReport(con) method with a live DB connection
+        CountryReport.generateReport(con);
+
+        // 2. Covers empty, null, and null-capital branches inside printCountries()
+        CountryReport.printCountries("Empty List Test", null, new ArrayList<>());
+        CountryReport.printCountries("Null List Test", null, null);
+
+        ArrayList<World.Country> nullCapitalList = new ArrayList<>();
+        World.Country countryWithNullCapital = new World.Country();
+        countryWithNullCapital.setCode("TST");
+        countryWithNullCapital.setName("Testland");
+        countryWithNullCapital.setContinent("Europe");
+        countryWithNullCapital.setRegion("Western Europe");
+        countryWithNullCapital.setPopulation(1000);
+        countryWithNullCapital.setCapital(null); // Triggers the 'c.getCapital() == null ? "Unknown"' branch
+        nullCapitalList.add(countryWithNullCapital);
+        CountryReport.printCountries("Null Capital Test", null, nullCapitalList);
+
+        // 3. Open and immediately close a temporary connection so JDBC throws a genuine SQLException
+        java.sql.Connection closedCon = Connection.connect();
+        assertNotNull(closedCon);
+        closedCon.close();
+
+        ArrayList<World.Country> errorResult = CountryReport.getCountries(closedCon, null);
+        assertNotNull(errorResult);
+        assertTrue(errorResult.isEmpty());
+    }
+
     @AfterAll
     static void disconnect() {
         // Use the team's official disconnect method to clean up
