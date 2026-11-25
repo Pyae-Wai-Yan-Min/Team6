@@ -75,6 +75,7 @@ public class ConnectionIntegrationTest {
 
         // Toggle between Scenario A (Docker fallback succeeds) and Scenario B (both fail + retry)
         final boolean[] allowDockerConnection = {true};
+        final int[] failCount = {0};
 
         Driver fakeDriver = new Driver() {
             @Override
@@ -86,8 +87,11 @@ public class ConnectionIntegrationTest {
                     if (allowDockerConnection[0]) {
                         return dummyDockerCon;
                     }
-                    // Interrupt current thread so Thread.sleep(3000) hits InterruptedException immediately (0ms wait)
-                    Thread.currentThread().interrupt();
+                    // Let the first failed attempt sleep normally (covers lines 52 & 55),
+                    // then interrupt subsequent attempts so the remaining retries finish in 0ms (covers lines 53-54).
+                    if (failCount[0]++ > 0) {
+                        Thread.currentThread().interrupt();
+                    }
                     throw new SQLException("Simulated Docker DB failure");
                 }
                 return null;
