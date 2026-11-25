@@ -7,6 +7,10 @@ on:
       - testing
 
 jobs:
+
+  permissions:
+    contents: write
+
   UnitTests:
     name: Unit Tests
     runs-on: ubuntu-22.04
