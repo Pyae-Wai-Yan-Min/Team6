@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<ruleset name="Team6 Custom PMD Ruleset"
+         xmlns="http://pmd.sourceforge.net/ruleset/2.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+    <description>Static analysis rules for the population reporting service.</description>
+
+    <!-- Error Prone: keep CloseResource, ReturnEmptyCollectionRatherThanNull, and other real bug checks active -->
+    <rule ref="category/java/errorprone.xml">
+        <!-- Allow System.out/System.err in console report output -->
+        <exclude name="SystemPrintln"/>
+        <!-- Allow intentional System.exit(-1) when JDBC driver cannot be loaded -->
+        <exclude name="DoNotTerminateVM"/>
+        <!-- SQL queries and report labels repeat column/table strings intentionally -->
+        <exclude name="AvoidDuplicateLiterals"/>
+    </rule>
+
+    <!-- Best Practices: keep LooseCoupling and LiteralsFirstInComparisons active for cleanup -->
+    <rule ref="category/java/bestpractices.xml">
+        <!-- Allow System.out.println in CLI reporting methods -->
+        <exclude name="SystemPrintln"/>
+    </rule>
+
+    <!-- Code Style: exclude noisy final/naming rules while keeping ControlStatementBraces active -->
+    <rule ref="category/java/codestyle.xml">
+        <exclude name="ShortVariable"/>
+        <exclude name="LongVariable"/>
+        <exclude name="OnlyOneReturn"/>
+        <exclude name="AtLeastOneConstructor"/>
+        <exclude name="CommentDefaultAccessModifier"/>
+        <!-- High-volume verbosity rules flagged across parameters and local variables -->
+        <exclude name="MethodArgumentCouldBeFinal"/>
+        <exclude name="LocalVariableCouldBeFinal"/>
+        <!-- Allow domain/entry-point class names such as Main and City -->
+        <exclude name="ShortClassName"/>
+    </rule>
+
+    <!-- Design: keep AvoidCatchingGenericException, CognitiveComplexity, and CyclomaticComplexity active -->
+    <rule ref="category/java/design.xml">
+        <!-- Report classes intentionally group static query + print helpers -->
+        <exclude name="UseUtilityClass"/>
+        <exclude name="ExcessiveImports"/>
+        <exclude name="CouplingBetweenObjects"/>
+        <!-- Model POJOs in World.java and multi-method report classes -->
+        <exclude name="DataClass"/>
+        <exclude name="TooManyMethods"/>
+        <!-- Unconfigured rule that caused a configerror in pmd.xml -->
+        <exclude name="LoosePackageCoupling"/>
+    </rule>
+</ruleset>
