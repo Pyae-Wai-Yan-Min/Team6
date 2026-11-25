@@ -6,11 +6,10 @@ on:
       - develop
       - testing
 
-jobs:
-
-  permissions:
+permissions:
     contents: write
 
+jobs:
   UnitTests:
     name: Unit Tests
     runs-on: ubuntu-22.04
