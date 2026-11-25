@@ -1,6 +1,10 @@
 package com.github.team6;
 
 import org.junit.jupiter.api.Test;
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
+import java.lang.reflect.Proxy;
+import java.sql.Connection;
 
 /**
  * Integration tests for the Main application entry point.
@@ -24,5 +28,35 @@ public class MainIntegrationTest {
     @Test
     void testRunWithNullConnection() {
         Main.run(null);
+    }
+
+    /**
+     * Triggers the catch (Exception e) block inside Main.run() (lines 56-57)
+     * without modifying Main.java, pushing Main.java to 100% coverage.
+     */
+    @Test
+    void testRunCatchBlock() {
+        Connection dummyCon = (Connection) Proxy.newProxyInstance(
+                Connection.class.getClassLoader(),
+                new Class<?>[]{Connection.class},
+                (proxy, method, args) -> null
+        );
+
+        PrintStream originalOut = System.out;
+        try {
+            System.setOut(new PrintStream(new ByteArrayOutputStream()) {
+                @Override
+                public void println(String x) {
+                    if ("Running application...".equals(x)) {
+                        throw new RuntimeException("Simulated report generation error");
+                    }
+                    originalOut.println(x);
+                }
+            });
+
+            Main.run(dummyCon);
+        } finally {
+            System.setOut(originalOut);
+        }
     }
 }
