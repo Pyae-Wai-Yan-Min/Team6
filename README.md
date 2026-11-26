@@ -10,6 +10,18 @@
 
 [![Build Status](https://github.com/Pyae-Wai-Yan-Min/Team6/actions/workflows/main.yml/badge.svg?branch=master)](https://github.com/Pyae-Wai-Yan-Min/Team6/actions/workflows/main.yml)
 
+# Develop
+
+[![A workflow for Team 6 DevOps project](https://github.com/Pyae-Wai-Yan-Min/Team6/actions/workflows/main.yml/badge.svg?branch=develop)](https://github.com/Pyae-Wai-Yan-Min/Team6/actions/workflows/main.yml)
+
+# CodeCov
+
+Code Coverage
+
+[![codecov](https://codecov.io/gh/Pyae-Wai-Yan-Min/Team6/master/master/graph/badge.svg)](https://codecov.io/gh/Pyae-Wai-Yan-Min/Team6)
+
+
+
 
 ___
 
